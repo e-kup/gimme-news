@@ -2,6 +2,7 @@ import { LiveReload, Links, Outlet } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
 import globalStylesUrl from './styles/global.css';
+import appStylesUrl from './styles/app.css';
 
 const App = () => {
   return (
@@ -21,9 +22,11 @@ const App = () => {
 
 export const links: LinksFunction = () => {
   return [
+    { rel: 'stylesheet', href: globalStylesUrl },
+    { rel: 'stylesheet', href: appStylesUrl },
     {
       rel: 'stylesheet',
-      href: globalStylesUrl,
+      href: 'https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&display=swap',
     },
   ];
 };
