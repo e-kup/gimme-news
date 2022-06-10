@@ -4,11 +4,14 @@ import type { LinksFunction } from '@remix-run/node';
 import stylesUrl from '~/styles/index.css';
 import { useLoaderData } from '@remix-run/react';
 import { fetchReactArticles } from '~/lib/feed';
+import ArticleCard from '~/components/ArticleCard';
 import { Article } from '~/types';
+import ArticleGrid from '~/components/ArticleGrid';
+import PageLayout from '~/components/PageLayout';
 
 type LoaderData = Article[];
 
-export async function loader({ request }) {
+export async function loader() {
   const data = await fetchReactArticles();
   return data;
 }
@@ -16,18 +19,20 @@ export async function loader({ request }) {
 const Test: VFC = () => {
   const data = useLoaderData<LoaderData>();
   return (
-    <>
-      <h1 className="text-3xl font-bold text-gray-900 font-poppins">
-        all news
-      </h1>
-      {data.map((item) => (
-        <div key={item.title}>
-          <a href={item.link}>{item.title}</a>
-          <div className="bg-slate-400">{item.description}</div>
-          <img src={item.imageUrl} />
-        </div>
-      ))}
-    </>
+    <PageLayout>
+      <ArticleGrid>
+        {data.map((item) => (
+          <div key={item.title}>
+            <ArticleCard
+              url={item.link}
+              image={item.imageUrl}
+              title={item.title}
+              description={item.description}
+            />
+          </div>
+        ))}
+      </ArticleGrid>
+    </PageLayout>
   );
 };
 

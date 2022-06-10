@@ -18,11 +18,16 @@ export const getOGMetaData = async (
   console.log(`couldn't get metadata of url: ${url}`);
 };
 
+const validateImageUrl = (url: string | undefined): string | undefined => {
+  if (!url || !url.startsWith('https')) return undefined;
+  return url;
+};
+
 export const mapMetaData = (metaData: OGMetaDataResult): MetaData => ({
   description: metaData.ogDescription ?? '',
   imageUrl: Array.isArray(metaData?.ogImage)
-    ? metaData.ogImage[0].url
-    : metaData?.ogImage?.url,
+    ? validateImageUrl(metaData.ogImage[0].url)
+    : validateImageUrl(metaData?.ogImage?.url),
 });
 
 export const getUrlMetaData = async (

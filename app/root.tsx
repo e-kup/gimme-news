@@ -1,4 +1,4 @@
-import { LiveReload, Links, Outlet } from '@remix-run/react';
+import { LiveReload, Links, Outlet, Scripts } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
 import globalStylesUrl from './styles/global.css';
@@ -9,11 +9,12 @@ const App = () => {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <title>Remix: So great, it's funny!</title>
+        <title>Gimme news</title>
         <Links />
       </head>
       <body>
         <Outlet />
+        <Scripts />
         <LiveReload />
       </body>
     </html>

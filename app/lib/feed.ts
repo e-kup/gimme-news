@@ -4,6 +4,7 @@ import { parseRssFromUrl } from '~/lib/rss-parser';
 import { getUrlMetaData } from '~/lib/metaData';
 
 const ARTICLES_LIMIT = 10;
+const DESCRIPTION_CHAR_LIMIT = 300;
 
 const randomizeFeed = (feed: RssContent[]): RssContent[] => {
   return feed.sort(() => Math.random() - 0.5);
@@ -26,7 +27,8 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
             link: rssItem.link,
             imageUrl: metadata?.imageUrl ?? '',
             description:
-              (metadata?.description && metadata.description.slice(0, 500)) ??
+              (metadata?.description &&
+                metadata.description.slice(0, DESCRIPTION_CHAR_LIMIT)) ??
               '',
           };
         } catch (e) {
