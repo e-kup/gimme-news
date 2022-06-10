@@ -1,5 +1,6 @@
 import { CategoryFeed, Feed, SearchableFeed, SupportedTopic } from '~/types';
 import feed from '~/config/feed';
+import supportedTopic from '~/config/supportedTopic';
 
 export const isCategoryFeed = (feed: Feed): feed is CategoryFeed => {
   return 'categoryPath' in feed;
@@ -42,4 +43,8 @@ export const getFeedUrlsByTopic = (topic: SupportedTopic): string[] => {
   return feed
     .filter(canGetCategoryArticles)
     .map((feed) => getFeedUrlByTopic(feed, topic));
+};
+
+export const isSupportedTopic = (topic: string): topic is SupportedTopic => {
+  return supportedTopic.includes(topic as SupportedTopic);
 };

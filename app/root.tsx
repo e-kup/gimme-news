@@ -3,6 +3,7 @@ import type { LinksFunction } from '@remix-run/node';
 
 import globalStylesUrl from './styles/global.css';
 import appStylesUrl from './styles/app.css';
+import AppLayout from '~/components/AppLayout';
 
 const App = () => {
   return (
@@ -13,8 +14,10 @@ const App = () => {
         <Links />
       </head>
       <body>
-        <Outlet />
-        <Scripts />
+        <AppLayout>
+          <Outlet />
+        </AppLayout>
+        {/*<Scripts />*/}
         <LiveReload />
       </body>
     </html>

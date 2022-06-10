@@ -1,21 +1,28 @@
 import { VFC } from 'react';
-import type { LinksFunction } from '@remix-run/node';
+import type { LoaderFunction } from '@remix-run/node';
 
-import stylesUrl from '~/styles/index.css';
 import { useLoaderData } from '@remix-run/react';
-import { fetchAllArticles } from '~/lib/feed';
+import { fetchArticlesByTopic } from '~/lib/feed';
 import ArticleCard from '~/components/ArticleCard';
 import { Article } from '~/types';
 import ArticleGrid from '~/components/ArticleGrid';
+import { isSupportedTopic } from '~/lib/utils';
 
 type LoaderData = Article[];
 
-export async function loader() {
-  const data = await fetchAllArticles();
-  return data;
-}
+export const loader: LoaderFunction = async ({ params }) => {
+  const { category } = params;
+  if (!category || !isSupportedTopic(category)) {
+    throw new Response('Not Found', {
+      status: 404,
+    });
+  }
 
-const IndexRoute: VFC = () => {
+  const data = await fetchArticlesByTopic(category);
+  return data;
+};
+
+const CategoryRoute: VFC = () => {
   const data = useLoaderData<LoaderData>();
   return (
     <ArticleGrid>
@@ -33,8 +40,4 @@ const IndexRoute: VFC = () => {
   );
 };
 
-export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: stylesUrl }];
-};
-
-export default IndexRoute;
+export default CategoryRoute;

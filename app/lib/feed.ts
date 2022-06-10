@@ -1,5 +1,5 @@
-import { Article, ParseResult, RssContent } from '~/types';
-import { getFeedUrlsByTopic } from '~/lib/utils';
+import { Article, ParseResult, RssContent, SupportedTopic } from '~/types';
+import { getAllFeedUrls, getFeedUrlsByTopic } from '~/lib/utils';
 import { parseRssFromUrl } from '~/lib/rss-parser';
 import { getUrlMetaData } from '~/lib/metaData';
 
@@ -54,8 +54,16 @@ const mergeContentFromVariousSources = (
   return rssData.map((data) => data.items).flat();
 };
 
-export const fetchReactArticles = async () => {
-  const articleUrls = getFeedUrlsByTopic('react');
+export const fetchArticlesByTopic = async (topic: SupportedTopic) => {
+  const articleUrls = getFeedUrlsByTopic(topic);
+  const parsedContent = await Promise.all(articleUrls.map(parseRssFromUrl));
+  const mergedContent = mergeContentFromVariousSources(parsedContent);
+  const data = await prepareData(mergedContent);
+  return data;
+};
+
+export const fetchAllArticles = async () => {
+  const articleUrls = getAllFeedUrls();
   const parsedContent = await Promise.all(articleUrls.map(parseRssFromUrl));
   const mergedContent = mergeContentFromVariousSources(parsedContent);
   const data = await prepareData(mergedContent);

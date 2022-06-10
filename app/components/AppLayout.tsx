@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 
-interface PageLayoutProps {
+interface AppLayoutProps {
   children: ReactNode;
 }
 
-const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
+const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col w-full border-opacity-50">
       <h4 className="text-xl font-bold font-poppins px-3 py-5">Gimme news</h4>
@@ -22,4 +22,4 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
   );
 };
 
-export default PageLayout;
+export default AppLayout;
