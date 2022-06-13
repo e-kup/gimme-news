@@ -1,13 +1,22 @@
 import { Article, ParseResult, RssContent, SupportedTopic } from '~/types';
-import { getAllFeedUrls, getFeedUrlsByTopic } from '~/lib/utils';
+import {
+  getAllFeedUrls,
+  getFeedUrlsByTopic,
+  getTimestampFromDateString,
+} from '~/lib/utils';
 import { parseRssFromUrl } from '~/lib/rss-parser';
 import { getUrlMetaData } from '~/lib/metaData';
 
 const ARTICLES_LIMIT = 10;
 const DESCRIPTION_CHAR_LIMIT = 300;
 
-const randomizeFeed = (feed: RssContent[]): RssContent[] => {
-  return feed.sort(() => Math.random() - 0.5);
+const sortFeed = (feed: RssContent[]): RssContent[] => {
+  // return feed.sort(() => Math.random() - 0.5);
+  return feed.sort(
+    (a, b) =>
+      getTimestampFromDateString(b.pubDate) -
+      getTimestampFromDateString(a.pubDate),
+  );
 };
 
 const cropFeed = (feed: RssContent[]): RssContent[] => {
@@ -16,15 +25,18 @@ const cropFeed = (feed: RssContent[]): RssContent[] => {
 
 const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
   try {
-    const randomizedFeed = randomizeFeed(feed);
+    const randomizedFeed = sortFeed(feed);
     const limitedFeed = cropFeed(randomizedFeed);
     const articles = Promise.all(
       limitedFeed.map(async (rssItem) => {
+        const { title, link, pubDate } = rssItem;
+        const pubDateTimestamp = getTimestampFromDateString(pubDate);
         try {
           const metadata = await getUrlMetaData(rssItem.link);
           return {
-            title: rssItem.title,
-            link: rssItem.link,
+            title: title,
+            link: link,
+            pubDateTimestamp,
             imageUrl: metadata?.imageUrl ?? '',
             description:
               (metadata?.description &&
@@ -33,8 +45,9 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
           };
         } catch (e) {
           return {
-            title: rssItem.title,
-            link: rssItem.link,
+            title: title,
+            link: link,
+            pubDateTimestamp,
             imageUrl: '',
             description: '',
           };

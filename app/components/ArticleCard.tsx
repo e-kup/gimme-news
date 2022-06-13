@@ -5,6 +5,7 @@ interface CardProps {
   image: string;
   title: string;
   description: string;
+  publicationDate: string;
 }
 
 const bookmark = (
@@ -41,7 +42,13 @@ const storedBookmark = (
   </svg>
 );
 
-const ArticleCard: FC<CardProps> = ({ url, image, title, description }) => {
+const ArticleCard: FC<CardProps> = ({
+  url,
+  image,
+  title,
+  description,
+  publicationDate,
+}) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const onBookmarkChange = (e: ChangeEvent) => {
     e.stopPropagation();
@@ -55,6 +62,7 @@ const ArticleCard: FC<CardProps> = ({ url, image, title, description }) => {
         </figure>
         <div className="card-body">
           <h2 className="card-title">{title}</h2>
+          <p className="text-sm">{publicationDate}</p>
           <p>{description}</p>
           <div className="card-actions justify-end">
             <div

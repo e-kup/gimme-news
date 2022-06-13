@@ -26,6 +26,7 @@ export interface Article {
   link: string;
   description: string;
   imageUrl: string;
+  pubDateTimestamp: number;
 }
 
 export type OGMetaDataResult = OpenGraphProperties & {

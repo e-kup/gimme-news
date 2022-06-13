@@ -7,7 +7,7 @@ import { fetchArticlesByTopic } from '~/lib/feed';
 import ArticleCard from '~/components/ArticleCard';
 import ArticleGrid from '~/components/ArticleGrid';
 import { Article } from '~/types';
-import { isSupportedTopic } from '~/lib/utils';
+import { getLocaleFromTimestamp, isSupportedTopic } from '~/lib/utils';
 import CategoryNav from '~/components/CategoryNav';
 
 type LoaderData = Article[];
@@ -37,6 +37,7 @@ const CategoryRoute: FC = () => {
               image={item.imageUrl}
               title={item.title}
               description={item.description}
+              publicationDate={getLocaleFromTimestamp(item.pubDateTimestamp)}
             />
           </div>
         ))}

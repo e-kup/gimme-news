@@ -10,10 +10,22 @@ import ArticleCard from '~/components/ArticleCard';
 import ArticleGrid from '~/components/ArticleGrid';
 import CategoryNav from '~/components/CategoryNav';
 
+import { db } from '~/lib/db.server';
+import { getLocaleFromTimestamp } from '~/lib/utils';
+
 type LoaderData = Article[];
 
 export async function loader() {
   const data = await fetchAllArticles();
+  const articles = {
+    articles: await db.article.findMany({
+      include: {
+        users: true,
+      },
+    }),
+  };
+  // eslint-disable-next-line
+  console.log(articles.articles.map((a) => a.users));
   return json(data);
 }
 
@@ -30,6 +42,7 @@ const IndexRoute: FC = () => {
               image={item.imageUrl}
               title={item.title}
               description={item.description}
+              publicationDate={getLocaleFromTimestamp(item.pubDateTimestamp)}
             />
           </div>
         ))}
