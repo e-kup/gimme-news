@@ -31,8 +31,8 @@ const ArticleCard: FC<CardProps> = ({
           <img src={image} aria-hidden="true" />
         </figure>
         <div className="card-body">
+          <div className="badge badge-ghost p-0">{publicationDate}</div>
           <h2 className="card-title">{title}</h2>
-          <p className="text-sm">{publicationDate}</p>
           <p>{description}</p>
           <div className="card-actions justify-end">
             {userId ? (

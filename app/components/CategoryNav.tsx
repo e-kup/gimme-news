@@ -7,7 +7,7 @@ const CategoryNav: FC = () => {
   return (
     <nav className="mb-5 text-center">
       {supportedTopic.map((topic) => (
-        <CategoryLink url={`/category/${topic}`}>
+        <CategoryLink key={topic} url={`/category/${topic}`}>
           {capitalize(topic)}
         </CategoryLink>
       ))}
