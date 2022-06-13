@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, FC } from 'react';
 
 interface CardProps {
   url: string;
@@ -41,12 +41,7 @@ const storedBookmark = (
   </svg>
 );
 
-const ArticleCard: React.FC<CardProps> = ({
-  url,
-  image,
-  title,
-  description,
-}) => {
+const ArticleCard: FC<CardProps> = ({ url, image, title, description }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const onBookmarkChange = (e: ChangeEvent) => {
     e.stopPropagation();
@@ -54,7 +49,7 @@ const ArticleCard: React.FC<CardProps> = ({
   };
   return (
     <a href={url}>
-      <div className="card h-full bg-base-100 shadow-xl">
+      <div className="card h-full bg-base-100 shadow-xl bg-gray-800">
         <figure>
           <img src={image} aria-hidden="true" />
         </figure>

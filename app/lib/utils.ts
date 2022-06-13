@@ -48,3 +48,6 @@ export const getFeedUrlsByTopic = (topic: SupportedTopic): string[] => {
 export const isSupportedTopic = (topic: string): topic is SupportedTopic => {
   return supportedTopic.includes(topic as SupportedTopic);
 };
+
+export const capitalize = (text: string): string =>
+  text.replace(/\b\w/g, (l) => l.toUpperCase());
