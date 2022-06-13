@@ -5,8 +5,8 @@ const db = new PrismaClient();
 async function seed() {
   const testUser = await db.user.create({
     data: {
-      username: 'test',
-      passwordHash: 'tset',
+      username: 'test1',
+      passwordHash: 'test123456',
     },
   });
   await Promise.all(

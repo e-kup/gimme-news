@@ -31,14 +31,14 @@ const feed: Feed[] = [
     url: 'https://medium.com/feed/dailyjs',
     topic: ['ux', 'design', 'frontend', 'javascript', 'react'],
   },
-  {
-    title: 'Hacker news',
-    slug: 'hackernews',
-    website: 'https://hnrss.org/',
-    url: 'https://hnrss.org/newest',
-    query: 'q',
-    topic: ['ux', 'design', 'frontend', 'javascript', 'react'],
-  },
+  // {
+  //   title: 'Hacker news',
+  //   slug: 'hackernews',
+  //   website: 'https://hnrss.org/',
+  //   url: 'https://hnrss.org/newest',
+  //   query: 'q',
+  //   topic: ['ux', 'design', 'frontend', 'javascript', 'react'],
+  // },
 ];
 
 export default feed;

@@ -1,21 +1,28 @@
 import { FC } from 'react';
 import type { LinksFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
+import { json, LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import { Article } from '~/types';
 import stylesUrl from '~/styles/index.css';
-import { fetchAllArticles } from '~/lib/feed';
 import ArticleCard from '~/components/ArticleCard';
 import ArticleGrid from '~/components/ArticleGrid';
 import CategoryNav from '~/components/CategoryNav';
+import PageLayout from '~/components/PageLayout';
+import LoginModal from '~/components/LoginModal';
 
 import { db } from '~/lib/db.server';
+import { fetchAllArticles } from '~/lib/feed';
 import { getLocaleFromTimestamp } from '~/lib/utils';
+import { getUser, User } from '~/lib/session.server';
 
-type LoaderData = Article[];
+interface LoaderData {
+  articles: Article[];
+  user: User;
+}
 
-export async function loader() {
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
   const data = await fetchAllArticles();
   const articles = {
     articles: await db.article.findMany({
@@ -26,16 +33,19 @@ export async function loader() {
   };
   // eslint-disable-next-line
   console.log(articles.articles.map((a) => a.users));
-  return json(data);
-}
+  return json({
+    articles: data,
+    user,
+  });
+};
 
 const IndexRoute: FC = () => {
-  const data = useLoaderData<LoaderData>();
+  const { articles, user } = useLoaderData<LoaderData>();
   return (
-    <>
+    <PageLayout user={user}>
       <CategoryNav />
       <ArticleGrid>
-        {data.map((item) => (
+        {articles.map((item) => (
           <div key={item.title}>
             <ArticleCard
               url={item.link}
@@ -43,11 +53,13 @@ const IndexRoute: FC = () => {
               title={item.title}
               description={item.description}
               publicationDate={getLocaleFromTimestamp(item.pubDateTimestamp)}
+              userId={user?.id}
             />
           </div>
         ))}
       </ArticleGrid>
-    </>
+      <LoginModal id={'login'} />
+    </PageLayout>
   );
 };
 

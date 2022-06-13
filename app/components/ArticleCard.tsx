@@ -1,4 +1,5 @@
-import { ChangeEvent, useState, FC } from 'react';
+import { useState, FC } from 'react';
+import LoginModalTrigger from '~/components/LoginModalTrigger';
 
 interface CardProps {
   url: string;
@@ -6,6 +7,7 @@ interface CardProps {
   title: string;
   description: string;
   publicationDate: string;
+  userId?: string;
 }
 
 const bookmark = (
@@ -48,10 +50,10 @@ const ArticleCard: FC<CardProps> = ({
   title,
   description,
   publicationDate,
+  userId,
 }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const onBookmarkChange = (e: ChangeEvent) => {
-    e.stopPropagation();
+  const onBookmarkChange = () => {
     setIsBookmarked((is) => !is);
   };
   return (
@@ -65,22 +67,33 @@ const ArticleCard: FC<CardProps> = ({
           <p className="text-sm">{publicationDate}</p>
           <p>{description}</p>
           <div className="card-actions justify-end">
-            <div
-              className="tooltip tooltip-left"
-              data-tip={
-                isBookmarked ? 'remove from bookmarks' : 'add to bookmarks'
-              }
-            >
-              <label className="swap swap-flip text-9xl">
-                <input
-                  type="checkbox"
-                  checked={isBookmarked}
-                  onChange={onBookmarkChange}
-                />
-                <div className="swap-on">{storedBookmark}</div>
-                <div className="swap-off">{bookmark}</div>
-              </label>
-            </div>
+            {userId ? (
+              <div
+                className="tooltip tooltip-left"
+                data-tip={
+                  isBookmarked ? 'remove from bookmarks' : 'add to bookmarks'
+                }
+              >
+                <label className="swap swap-flip text-9xl">
+                  <input
+                    type="checkbox"
+                    checked={isBookmarked}
+                    onChange={onBookmarkChange}
+                  />
+                  <div className="swap-on">{storedBookmark}</div>
+                  <div className="swap-off">{bookmark}</div>
+                </label>
+              </div>
+            ) : (
+              <LoginModalTrigger id={'login'}>
+                <div
+                  className="tooltip tooltip-left"
+                  data-tip="add to bookmarks"
+                >
+                  <div className="swap-off">{bookmark}</div>
+                </div>
+              </LoginModalTrigger>
+            )}
           </div>
         </div>
       </div>

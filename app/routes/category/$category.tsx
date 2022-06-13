@@ -9,10 +9,17 @@ import ArticleGrid from '~/components/ArticleGrid';
 import { Article } from '~/types';
 import { getLocaleFromTimestamp, isSupportedTopic } from '~/lib/utils';
 import CategoryNav from '~/components/CategoryNav';
+import LoginModal from '~/components/LoginModal';
+import { getUser, getUserId, User } from '~/lib/session.server';
+import PageLayout from '~/components/PageLayout';
 
-type LoaderData = Article[];
+interface LoaderData {
+  articles: Article[];
+  user: User;
+}
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
+  const user = await getUser(request);
   const { category } = params;
   if (!category || !isSupportedTopic(category)) {
     throw new Response('Not Found', {
@@ -21,16 +28,20 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 
   const data = await fetchArticlesByTopic(category);
-  return json(data);
+  return json({
+    articles: data,
+    user,
+  });
 };
 
 const CategoryRoute: FC = () => {
-  const data = useLoaderData<LoaderData>();
+  const { articles, user } = useLoaderData<LoaderData>();
+
   return (
-    <>
+    <PageLayout user={user}>
       <CategoryNav />
       <ArticleGrid>
-        {data.map((item) => (
+        {articles.map((item) => (
           <div key={item.title}>
             <ArticleCard
               url={item.link}
@@ -38,11 +49,13 @@ const CategoryRoute: FC = () => {
               title={item.title}
               description={item.description}
               publicationDate={getLocaleFromTimestamp(item.pubDateTimestamp)}
+              userId={user?.id}
             />
           </div>
         ))}
       </ArticleGrid>
-    </>
+      <LoginModal id={'login'} />
+    </PageLayout>
   );
 };
 

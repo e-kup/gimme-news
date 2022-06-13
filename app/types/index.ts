@@ -1,5 +1,6 @@
 import { OpenGraphImage, OpenGraphProperties } from 'open-graph-scraper';
 import supportedTopic from '~/config/supportedTopic';
+import { getUser } from '~/lib/session.server';
 
 export type SupportedTopic = typeof supportedTopic[number];
 
