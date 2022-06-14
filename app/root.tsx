@@ -3,17 +3,23 @@ import type { LinksFunction } from '@remix-run/node';
 
 import globalStylesUrl from './styles/global.css';
 import appStylesUrl from './styles/app.css';
+import { ThemeProvider } from '~/lib/themeContext';
+import AppLayout from '~/components/AppLayout';
 
 const App = () => {
   return (
-    <html lang="en" data-theme="dracula">
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <title>Gimme news</title>
         <Links />
       </head>
       <body>
-        <Outlet />
+        <ThemeProvider>
+          <AppLayout>
+            <Outlet />
+          </AppLayout>
+        </ThemeProvider>
         <Scripts />
         <LiveReload />
       </body>

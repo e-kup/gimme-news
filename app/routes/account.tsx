@@ -69,7 +69,7 @@ const AccountRoute: FC = () => {
 
   return (
     <PageLayout user={user}>
-      <div className="relative text-center bg-gray-800">
+      <div className="relative text-center base-200">
         <div className="mb-20">
           <h3 className="text-lg font-bold font-poppins mb-6">Your account</h3>
           <div className="flex text-left">

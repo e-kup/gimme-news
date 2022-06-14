@@ -31,12 +31,12 @@ const ArticleCard: FC<CardProps> = ({
   };
   return (
     <a href={url}>
-      <div className="card h-full bg-base-100 shadow-xl bg-gray-800">
+      <div className="card rounded-none h-full border border-primary bg-base-100 base-200">
         <figure>
           <img src={image} aria-hidden="true" />
         </figure>
         <div className="card-body">
-          <div className="badge badge-ghost p-0">{publicationDate}</div>
+          <div className="badge badge-ghost">{publicationDate}</div>
           <h2 className="card-title">{title}</h2>
           <p>{description}</p>
           <div className="card-actions justify-end">

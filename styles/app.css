@@ -7,3 +7,13 @@
         width: inherit;
     }
 }
+
+.btn {
+    @apply rounded-none;
+}
+
+.badge-ghost {
+    background-color: #d4d4d4;
+    color: #262626;
+    @apply rounded-none
+}

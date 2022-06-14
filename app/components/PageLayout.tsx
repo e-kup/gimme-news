@@ -4,6 +4,7 @@ import { User } from '~/lib/session.server';
 import LoginModalTrigger from '~/components/LoginModalTrigger';
 import LoginModal from '~/components/LoginModal';
 import Logo from '~/components/icons/Logo';
+import ThemeSwitch from '~/components/ThemeSwith';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -13,14 +14,15 @@ interface PageLayoutProps {
 
 const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
   return (
-    <div className="flex flex-col w-full border-opacity-50 bg-gray-900 min-h-screen">
+    <div className="flex flex-col w-full border-opacity-50 base-300 min-h-screen">
       <div className="flex justify-between items-center px-6 py-5">
         <Link to="/">
           <div className="w-52 text-accent">
             <Logo />
           </div>
         </Link>
-        <div>
+        <div className="flex">
+          <ThemeSwitch />
           {!user ? (
             <Link to="/login" className="btn btn-primary">
               Login
@@ -88,7 +90,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
               </div>
             </div>
             <div className="divider divider-horizontal m-0 w-0" />
-            <div className="flex w-10/12 bg-gray-800">
+            <div className="flex w-10/12 base-200">
               <div className="p-8 w-full">{children}</div>
             </div>
           </>
