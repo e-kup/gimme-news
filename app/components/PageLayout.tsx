@@ -3,6 +3,7 @@ import { Link, NavLink } from '@remix-run/react';
 import { User } from '~/lib/session.server';
 import BookmarkIcon from '~/components/icons/Bookmark';
 import LoginModalTrigger from '~/components/LoginModalTrigger';
+import LoginModal from '~/components/LoginModal';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -79,6 +80,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
           <div className="p-8 w-full">{children}</div>
         )}
       </div>
+      <LoginModal id="login" />
     </div>
   );
 };

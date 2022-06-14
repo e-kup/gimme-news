@@ -5,7 +5,7 @@ import { useLoaderData, useSubmit } from '@remix-run/react';
 
 import { Article } from '~/types';
 import ArticleCard from '~/components/ArticleCard';
-import ArticleGrid from '~/components/ArticleGrid';
+import ArticleGridLayout from '~/components/ArticleGridLayout';
 import PageLayout from '~/components/PageLayout';
 import LoginModal from '~/components/LoginModal';
 
@@ -33,12 +33,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     select: {
       id: true,
       username: true,
-      articles: true,
+      articles: {
+        orderBy: { pubDateTimestamp: 'desc' },
+      },
     },
   });
   if (!userWithArticles) return { user: null, articles: [] };
   const { articles, ...user } = userWithArticles;
-  console.log(userWithArticles);
+
   return json({
     user,
     articles: articles.map((article) => ({
@@ -83,7 +85,7 @@ const BookmarksRoute: FC = () => {
   };
   return (
     <PageLayout user={user}>
-      <ArticleGrid>
+      <ArticleGridLayout>
         {articles.map((item) => {
           const { title, link, id, imageUrl, description, bookmarked } = item;
           const publicationDate = getLocaleFromTimestamp(item.pubDateTimestamp);
@@ -96,14 +98,14 @@ const BookmarksRoute: FC = () => {
                 title={title}
                 description={description}
                 publicationDate={publicationDate}
-                userId={user?.id}
+                isUserLogged={Boolean(user?.id)}
                 bookmarked={bookmarked}
                 onChange={onChange}
               />
             </div>
           );
         })}
-      </ArticleGrid>
+      </ArticleGridLayout>
       <LoginModal id={'login'} />
     </PageLayout>
   );

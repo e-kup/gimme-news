@@ -9,7 +9,7 @@ interface CardProps {
   title: string;
   description: string;
   publicationDate: string;
-  userId?: string;
+  isUserLogged: boolean;
   bookmarked: boolean;
   onChange: (bookmark: boolean) => void;
 }
@@ -20,7 +20,7 @@ const ArticleCard: FC<CardProps> = ({
   title,
   description,
   publicationDate,
-  userId,
+  isUserLogged,
   bookmarked,
   onChange,
 }) => {
@@ -40,7 +40,7 @@ const ArticleCard: FC<CardProps> = ({
           <h2 className="card-title">{title}</h2>
           <p>{description}</p>
           <div className="card-actions justify-end">
-            {userId ? (
+            {isUserLogged ? (
               <div
                 className="tooltip tooltip-left"
                 data-tip={
