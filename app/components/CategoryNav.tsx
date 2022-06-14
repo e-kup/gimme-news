@@ -16,7 +16,7 @@ const CategoryNav: FC<CategoryNavProps> = ({ categoryList, isUserLogged }) => {
     ? categoryList
     : categoryList.filter((category) => category.selected);
   return (
-    <nav className="mb-5 text-center">
+    <nav className="mb-8 text-center">
       {navigation.map((topic) => (
         <CategoryLink key={topic.id} url={`/category/${topic.id}`}>
           {topic.name}

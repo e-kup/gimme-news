@@ -6,7 +6,7 @@ import appStylesUrl from './styles/app.css';
 
 const App = () => {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dracula">
       <head>
         <meta charSet="utf-8" />
         <title>Gimme news</title>

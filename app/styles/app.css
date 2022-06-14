@@ -3365,6 +3365,10 @@ body[dir="rtl"] .checkbox:checked,
   margin-bottom: 5rem;
 }
 
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
 .inline {
   display: inline;
 }
