@@ -1,9 +1,9 @@
 import { FC, ReactNode } from 'react';
 import { Link, NavLink } from '@remix-run/react';
 import { User } from '~/lib/session.server';
-import BookmarkIcon from '~/components/icons/Bookmark';
 import LoginModalTrigger from '~/components/LoginModalTrigger';
 import LoginModal from '~/components/LoginModal';
+import Logo from '~/components/icons/Logo';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -16,7 +16,9 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
     <div className="flex flex-col w-full border-opacity-50 bg-gray-900 min-h-screen">
       <div className="flex justify-between items-center px-6 py-5">
         <Link to="/">
-          <h4 className="text-xl font-bold font-poppins">Gimme news</h4>
+          <div className="w-52 text-accent">
+            <Logo />
+          </div>
         </Link>
         <div>
           {!user ? (
@@ -43,6 +45,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
               <div className="sticky top-0 h-screen w-full px-3 py-5">
                 <NavLink
                   to="/"
+                  prefetch="render"
                   className={({ isActive }) =>
                     `btn ${
                       isActive ? 'btn-secondary' : 'btn-ghost'
@@ -51,7 +54,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
                 >
                   All news
                 </NavLink>
-                {user ? (
+                {user && (
                   <NavLink
                     to="/bookmarks"
                     className={({ isActive }) =>
@@ -62,7 +65,20 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
                   >
                     Bookmarks
                   </NavLink>
-                ) : (
+                )}
+                {user && (
+                  <NavLink
+                    to="/account"
+                    className={({ isActive }) =>
+                      `btn ${
+                        isActive ? 'btn-secondary' : 'btn-ghost'
+                      } w-full justify-start`
+                    }
+                  >
+                    Account
+                  </NavLink>
+                )}
+                {!user && (
                   <LoginModalTrigger id="login">
                     <span className="btn btn-ghost w-full justify-start">
                       Bookmarks

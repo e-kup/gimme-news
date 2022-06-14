@@ -10,6 +10,7 @@ const CategoryLink: FC<CategoryLinkProps> = ({ children, url }) => {
   return (
     <NavLink
       to={url}
+      prefetch="render"
       className={({ isActive }) =>
         isActive
           ? `${commonClassName} link-secondary`

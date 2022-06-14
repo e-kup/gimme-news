@@ -70,28 +70,38 @@ const AccountRoute: FC = () => {
   return (
     <PageLayout user={user}>
       <div className="relative text-center bg-gray-800">
-        <h3 className="text-lg font-bold font-poppins mb-6">
-          Topics you currently follow
-        </h3>
-        <form method="post">
-          <ul className="text-left mb-6 grid grid-cols-2">
-            {topics.map((t) => (
-              <li key={t.id} className="grid grid-cols-2 py-1 px-3">
-                <span>{t.name}</span>
-                <input
-                  key={t.id}
-                  name={t.id}
-                  type="checkbox"
-                  className="toggle toggle-accent"
-                  defaultChecked={t.selected}
-                />
-              </li>
-            ))}
-          </ul>
-          <button type="submit" className="btn btn-primary">
-            Save selection
-          </button>
-        </form>
+        <div className="mb-20">
+          <h3 className="text-lg font-bold font-poppins mb-6">Your account</h3>
+          <div className="flex text-left">
+            <p className="mr-5">Username: </p>
+            <p>{user?.username}</p>
+          </div>
+        </div>
+        <div className="divider" />
+        <div className="mb-20">
+          <h3 className="text-lg font-bold font-poppins mb-6">
+            Topics you currently follow
+          </h3>
+          <form method="post">
+            <ul className="text-left mb-6 grid grid-cols-2">
+              {topics.map((t) => (
+                <li key={t.id} className="grid grid-cols-2 py-1 px-3">
+                  <span>{t.name}</span>
+                  <input
+                    key={t.id}
+                    name={t.id}
+                    type="checkbox"
+                    className="toggle toggle-accent"
+                    defaultChecked={t.selected}
+                  />
+                </li>
+              ))}
+            </ul>
+            <button type="submit" className="btn btn-primary">
+              Save selection
+            </button>
+          </form>
+        </div>
       </div>
     </PageLayout>
   );

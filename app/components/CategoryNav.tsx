@@ -3,7 +3,6 @@ import CategoryLink from '~/components/CategoryLink';
 import { Topic } from '~/types';
 import SparklesIcon from '~/components/icons/Sparkles';
 import LoginModalTrigger from '~/components/LoginModalTrigger';
-import { TopicSelectModalTrigger } from '~/components/TopicSelectModal';
 import PlusIcon from '~/components/icons/Plus';
 import { Link } from '@remix-run/react';
 

@@ -9,7 +9,6 @@ import ArticleGridLayout from '~/components/ArticleGridLayout';
 import ArticleCard from '~/components/ArticleCard';
 import CategoryNav from '~/components/CategoryNav';
 import PageLayout from '~/components/PageLayout';
-import TopicSelectModal from '~/components/TopicSelectModal';
 import LoginModal from '~/components/LoginModal';
 
 interface ArticleGridProps {
@@ -62,7 +61,6 @@ const ArticlePage: FC<ArticleGridProps> = ({
           );
         })}
       </ArticleGridLayout>
-      <TopicSelectModal topics={categoryList} />
       <LoginModal id="login-feed" />
     </PageLayout>
   );

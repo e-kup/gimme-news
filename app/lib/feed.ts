@@ -7,11 +7,10 @@ import {
 import { parseRssFromUrl } from '~/lib/rss-parser';
 import { getUrlMetaData } from '~/lib/metaData';
 
-const ARTICLES_LIMIT = 10;
+const ARTICLES_LIMIT = 30;
 const DESCRIPTION_CHAR_LIMIT = 300;
 
 const sortFeed = (feed: RssContent[]): RssContent[] => {
-  // return feed.sort(() => Math.random() - 0.5);
   return feed.sort(
     (a, b) =>
       getTimestampFromDateString(b.pubDate) -

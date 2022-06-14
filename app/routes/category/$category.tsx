@@ -6,7 +6,7 @@ import { useLoaderData, useSubmit } from '@remix-run/react';
 import { fetchArticlesByTopic } from '~/lib/feed';
 import ArticleCard from '~/components/ArticleCard';
 import ArticleGridLayout from '~/components/ArticleGridLayout';
-import { Article } from '~/types';
+import { Article, Topic } from '~/types';
 import { getLocaleFromTimestamp, isSupportedTopic } from '~/lib/utils';
 import CategoryNav from '~/components/CategoryNav';
 import LoginModal from '~/components/LoginModal';
@@ -18,6 +18,7 @@ import { db } from '~/lib/db.server';
 interface LoaderData {
   articles: Article[];
   user: User;
+  topics: Topic[];
 }
 
 export const loader: LoaderFunction = async ({ params, request }) => {
@@ -30,9 +31,42 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   }
 
   const data = await fetchArticlesByTopic(category);
+  const userWithArticles = user
+    ? await db.user.findUnique({
+        where: {
+          id: user.id,
+        },
+
+        select: {
+          id: true,
+          articles: {
+            select: {
+              id: true,
+            },
+          },
+          topics: true,
+        },
+      })
+    : null;
+
+  const topics = await db.topic.findMany({});
   return json({
-    articles: data,
+    articles: data.map((article) => ({
+      ...article,
+      bookmarked: userWithArticles?.articles.some(
+        (bookmark) => bookmark.id === article.id,
+      ),
+    })),
     user,
+    topics: topics.map((t) => {
+      const isSelected = userWithArticles?.topics.some(
+        (selected) => selected.id === t.id,
+      );
+      return {
+        ...t,
+        selected: isSelected,
+      };
+    }),
   });
 };
 
@@ -99,8 +133,8 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const CategoryRoute: FC = () => {
-  const { articles, user } = useLoaderData<LoaderData>();
-  return <ArticlePage articles={articles} user={user} />;
+  const { articles, user, topics } = useLoaderData<LoaderData>();
+  return <ArticlePage articles={articles} user={user} categoryList={topics} />;
 };
 
 export default CategoryRoute;

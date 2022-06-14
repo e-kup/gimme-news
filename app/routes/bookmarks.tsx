@@ -7,7 +7,6 @@ import { Article } from '~/types';
 import ArticleCard from '~/components/ArticleCard';
 import ArticleGridLayout from '~/components/ArticleGridLayout';
 import PageLayout from '~/components/PageLayout';
-import LoginModal from '~/components/LoginModal';
 
 import { db } from '~/lib/db.server';
 import { getLocaleFromTimestamp } from '~/lib/utils';
@@ -17,12 +16,6 @@ interface LoaderData {
   articles: Article[];
   user: User;
 }
-
-// export function headers() {
-//   return {
-//     'Cache-Control': 'max-age=30000',
-//   };
-// }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
@@ -106,7 +99,6 @@ const BookmarksRoute: FC = () => {
           );
         })}
       </ArticleGridLayout>
-      <LoginModal id={'login'} />
     </PageLayout>
   );
 };
