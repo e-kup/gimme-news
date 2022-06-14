@@ -10,6 +10,8 @@ const LoginModal: FC<LoginModalProps> = ({ id }) => {
   const navigate = useNavigate();
 
   const navigateWithRedirect = () => {
+    // eslint-disable-next-line
+    console.log(location.pathname);
     const searchParams = new URLSearchParams([
       ['redirectTo', location.pathname],
     ]);

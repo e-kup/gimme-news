@@ -48,6 +48,16 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
                 >
                   All news
                 </NavLink>
+                <NavLink
+                  to="/bookmarks"
+                  className={({ isActive }) =>
+                    `btn ${
+                      isActive ? 'btn-secondary' : 'btn-ghost'
+                    } w-full justify-start`
+                  }
+                >
+                  Bookmarks
+                </NavLink>
               </div>
             </div>
             <div className="divider divider-horizontal m-0 w-0" />

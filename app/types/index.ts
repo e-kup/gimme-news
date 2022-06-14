@@ -1,6 +1,5 @@
 import { OpenGraphImage, OpenGraphProperties } from 'open-graph-scraper';
 import supportedTopic from '~/config/supportedTopic';
-import { getUser } from '~/lib/session.server';
 
 export type SupportedTopic = typeof supportedTopic[number];
 
@@ -23,11 +22,13 @@ export interface SearchableFeed extends BasicFeed {
 export type Feed = BasicFeed | CategoryFeed | SearchableFeed;
 
 export interface Article {
+  id: string;
   title: string;
   link: string;
   description: string;
   imageUrl: string;
   pubDateTimestamp: number;
+  bookmarked: boolean;
 }
 
 export type OGMetaDataResult = OpenGraphProperties & {
@@ -41,6 +42,7 @@ export interface MetaData {
 }
 
 export interface RssContent {
+  guid: string;
   title: string;
   link: string;
   description: string;

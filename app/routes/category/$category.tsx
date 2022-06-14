@@ -42,8 +42,9 @@ const CategoryRoute: FC = () => {
       <CategoryNav />
       <ArticleGrid>
         {articles.map((item) => (
-          <div key={item.title}>
+          <div key={item.id}>
             <ArticleCard
+              id={item.id}
               url={item.link}
               image={item.imageUrl}
               title={item.title}

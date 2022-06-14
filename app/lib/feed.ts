@@ -29,11 +29,12 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
     const limitedFeed = cropFeed(randomizedFeed);
     const articles = Promise.all(
       limitedFeed.map(async (rssItem) => {
-        const { title, link, pubDate } = rssItem;
+        const { title, link, pubDate, guid } = rssItem;
         const pubDateTimestamp = getTimestampFromDateString(pubDate);
         try {
           const metadata = await getUrlMetaData(rssItem.link);
           return {
+            id: guid,
             title: title,
             link: link,
             pubDateTimestamp,
@@ -45,6 +46,7 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
           };
         } catch (e) {
           return {
+            id: guid,
             title: title,
             link: link,
             pubDateTimestamp,
