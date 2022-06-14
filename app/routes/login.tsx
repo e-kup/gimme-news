@@ -116,7 +116,7 @@ const LoginRoute: FC = () => {
   return (
     <PageLayout hideSidebar user={null}>
       <div className="w-full flex justify-center">
-        <div className="card w-full lg:w-3/5 bg-primary text-primary-content">
+        <div className="card w-full lg:w-3/5 bg-secondary text-secondary-content">
           <div className="card-body">
             <h2 className="card-title mb-5 font-poppins text-2xl">Login</h2>
             <form method="post" autoComplete="off">
@@ -159,9 +159,14 @@ const LoginRoute: FC = () => {
                       Your Username
                     </span>
                   </label>
-                  <div className="relative">
-                    <label className="input-group" htmlFor="username-input">
-                      <span>Username</span>
+                  <div className="relative text-accent">
+                    <label
+                      className="input-group base-content"
+                      htmlFor="username-input"
+                    >
+                      <span className="neutral-content color-neutral-100">
+                        Username
+                      </span>
                       <input
                         type="text"
                         id="username-input"
@@ -189,7 +194,7 @@ const LoginRoute: FC = () => {
                       Your Password
                     </span>
                   </label>
-                  <div className="relative">
+                  <div className="relative text-accent">
                     <label className="input-group" htmlFor="password-input">
                       <span>Password</span>
                       <input

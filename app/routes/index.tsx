@@ -67,14 +67,6 @@ interface FormArticle extends Omit<Article, 'pubDateTimestamp' | 'bookmarked'> {
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
-  // eslint-disable-next-line
-  console.log(form.get('formId'));
-  const isSavingTopic = form.get('action') === 'save-topic';
-  if (isSavingTopic) {
-    for (const pair of form.entries()) {
-      console.log(`${pair[0]}, ${pair[1]}`);
-    }
-  }
 
   try {
     const bookmarked = form.get('bookmarked') as
@@ -130,6 +122,7 @@ export const action: ActionFunction = async ({ request }) => {
   return null;
 };
 
+//TODO: replace url with link
 const IndexRoute: FC = () => {
   const { articles, user, topics } = useLoaderData<LoaderData>();
   return <ArticlePage user={user} articles={articles} categoryList={topics} />;

@@ -16,7 +16,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
   return (
     <div className="flex flex-col w-full border-opacity-50 base-300 min-h-screen">
       <div className="flex justify-between items-center px-6 py-5">
-        <Link to="/">
+        <Link to="/" prefetch="render">
           <div className="w-52 text-accent">
             <Logo />
           </div>

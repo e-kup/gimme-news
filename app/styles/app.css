@@ -3478,6 +3478,11 @@ body[dir="rtl"] .checkbox:checked,
   background-color: hsl(var(--p) / var(--tw-bg-opacity));
 }
 
+.bg-secondary {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--s) / var(--tw-bg-opacity));
+}
+
 .fill-current {
   fill: currentColor;
 }
@@ -3568,6 +3573,11 @@ body[dir="rtl"] .checkbox:checked,
 
 .text-inherit {
   color: inherit;
+}
+
+.text-secondary-content {
+  --tw-text-opacity: 1;
+  color: hsl(var(--sc) / var(--tw-text-opacity));
 }
 
 .filter {
