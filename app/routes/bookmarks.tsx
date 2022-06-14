@@ -6,7 +6,6 @@ import { useLoaderData, useSubmit } from '@remix-run/react';
 import { Article } from '~/types';
 import ArticleCard from '~/components/ArticleCard';
 import ArticleGrid from '~/components/ArticleGrid';
-import CategoryNav from '~/components/CategoryNav';
 import PageLayout from '~/components/PageLayout';
 import LoginModal from '~/components/LoginModal';
 
@@ -18,6 +17,12 @@ interface LoaderData {
   articles: Article[];
   user: User;
 }
+
+// export function headers() {
+//   return {
+//     'Cache-Control': 'max-age=30000',
+//   };
+// }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
@@ -87,7 +92,6 @@ const BookmarksRoute: FC = () => {
             <div key={id}>
               <ArticleCard
                 url={link}
-                id={id}
                 image={imageUrl}
                 title={title}
                 description={description}

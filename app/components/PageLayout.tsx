@@ -1,6 +1,8 @@
 import { FC, ReactNode } from 'react';
 import { Link, NavLink } from '@remix-run/react';
 import { User } from '~/lib/session.server';
+import BookmarkIcon from '~/components/icons/Bookmark';
+import LoginModalTrigger from '~/components/LoginModalTrigger';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -48,16 +50,24 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
                 >
                   All news
                 </NavLink>
-                <NavLink
-                  to="/bookmarks"
-                  className={({ isActive }) =>
-                    `btn ${
-                      isActive ? 'btn-secondary' : 'btn-ghost'
-                    } w-full justify-start`
-                  }
-                >
-                  Bookmarks
-                </NavLink>
+                {user ? (
+                  <NavLink
+                    to="/bookmarks"
+                    className={({ isActive }) =>
+                      `btn ${
+                        isActive ? 'btn-secondary' : 'btn-ghost'
+                      } w-full justify-start`
+                    }
+                  >
+                    Bookmarks
+                  </NavLink>
+                ) : (
+                  <LoginModalTrigger id="login">
+                    <span className="btn btn-ghost w-full justify-start">
+                      Bookmarks
+                    </span>
+                  </LoginModalTrigger>
+                )}
               </div>
             </div>
             <div className="divider divider-horizontal m-0 w-0" />

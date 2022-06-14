@@ -44,7 +44,6 @@ const CategoryRoute: FC = () => {
         {articles.map((item) => (
           <div key={item.id}>
             <ArticleCard
-              id={item.id}
               url={item.link}
               image={item.imageUrl}
               title={item.title}

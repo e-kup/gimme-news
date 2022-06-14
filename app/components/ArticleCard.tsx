@@ -2,10 +2,8 @@ import { useState, FC } from 'react';
 import LoginModalTrigger from '~/components/LoginModalTrigger';
 import BookmarkIcon from '~/components/icons/Bookmark';
 import StoredBookmarkIcon from '~/components/icons/StoredBookmark';
-import { Form, useSubmit, useTransition } from '@remix-run/react';
 
 interface CardProps {
-  id: string;
   url: string;
   image: string;
   title: string;
@@ -17,7 +15,6 @@ interface CardProps {
 }
 
 const ArticleCard: FC<CardProps> = ({
-  id,
   url,
   image,
   title,
@@ -27,12 +24,10 @@ const ArticleCard: FC<CardProps> = ({
   bookmarked,
   onChange,
 }) => {
-  // const [bookmarked, setIsBookmarked] = useState(bookmarked);
-  const { state } = useTransition();
-  // eslint-disable-next-line
-  console.log(state);
+  const [isBookmarked, setIsBookmarked] = useState(bookmarked);
   const onBookmarkChange = () => {
-    onChange(!bookmarked);
+    onChange(!isBookmarked);
+    setIsBookmarked((is) => !is);
   };
   return (
     <a href={url}>
@@ -49,13 +44,13 @@ const ArticleCard: FC<CardProps> = ({
               <div
                 className="tooltip tooltip-left"
                 data-tip={
-                  bookmarked ? 'remove from bookmarks' : 'add to bookmarks'
+                  isBookmarked ? 'remove from bookmarks' : 'add to bookmarks'
                 }
               >
                 <label className="swap swap-flip text-9xl">
                   <input
                     type="checkbox"
-                    checked={bookmarked || state === 'submitting'}
+                    checked={isBookmarked}
                     onChange={onBookmarkChange}
                   />
                   <div className="swap-on text-secondary hover:text-inherit">

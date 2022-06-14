@@ -41,7 +41,6 @@ export const loader: LoaderFunction = async ({ request }) => {
       })
     : null;
 
-  console.log(userWithArticles);
   return json({
     articles: data.map((article) => ({
       ...article,
@@ -53,9 +52,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
-interface FormArticle
-  extends Omit<Article, 'publicationDateTimestamp' | 'bookmarked'> {
-  publicationDateTimestamp: string;
+interface FormArticle extends Omit<Article, 'pubDateTimestamp' | 'bookmarked'> {
+  pubDateTimestamp: string;
   bookmarked: string;
 }
 
@@ -72,13 +70,11 @@ export const action: ActionFunction = async ({ request }) => {
     const description = form.get('description') as FormArticle['description'];
     const imageUrl = form.get('imageUrl') as FormArticle['imageUrl'];
     const url = form.get('link') as FormArticle['link'];
-    const pubDate = Number(
-      form.get('pubDate'),
-    ) as FormArticle['pubDateTimestamp'];
+    const pubDateTimestamp = Number(
+      form.get('pubDateTimestamp') as FormArticle['pubDateTimestamp'],
+    );
 
-    console.log(bookmarked);
     if (bookmarked) {
-      // eslint-disable-next-line
       await db.user.update({
         where: {
           id: userId,
@@ -95,7 +91,7 @@ export const action: ActionFunction = async ({ request }) => {
                 description,
                 imageUrl,
                 url,
-                pubDate,
+                pubDateTimestamp,
               },
             },
           },
@@ -124,12 +120,10 @@ const IndexRoute: FC = () => {
   const submit = useSubmit();
   const onBookmarkChange = (article: Article, bookmark: boolean) => {
     const { bookmarked, pubDateTimestamp, ...rest } = article;
-    // eslint-disable-next-line
-    console.log(bookmark);
     submit(
       {
         ...rest,
-        pubDateTimestamp: pubDateTimestamp.toString(),
+        pubDateTimestamp: String(pubDateTimestamp),
         ...(bookmark && { bookmarked: 'true' }),
       },
       { replace: false, method: 'post' },
@@ -148,7 +142,6 @@ const IndexRoute: FC = () => {
             <div key={id}>
               <ArticleCard
                 url={link}
-                id={id}
                 image={imageUrl}
                 title={title}
                 description={description}
