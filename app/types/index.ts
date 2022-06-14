@@ -55,3 +55,9 @@ export interface ParseResult {
   items: RssContent[];
   [p: string]: any;
 }
+
+export interface Topic {
+  id: string;
+  name: string;
+  selected: boolean;
+}

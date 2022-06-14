@@ -17,6 +17,7 @@ model User {
   username      String   @unique
   passwordHash  String
   articles      Article[]
+  topics        Topic[]
 }
 
 model Article {
@@ -28,5 +29,11 @@ model Article {
   description       String
   url               String
   imageUrl          String
+  users             User[]
+}
+
+model Topic {
+  id                String   @id @default(uuid())
+  name              String
   users             User[]
 }

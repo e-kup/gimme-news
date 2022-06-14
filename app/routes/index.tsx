@@ -3,7 +3,7 @@ import type { ActionFunction, LinksFunction } from '@remix-run/node';
 import { json, LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
-import { Article } from '~/types';
+import { Article, Topic } from '~/types';
 import stylesUrl from '~/styles/index.css';
 
 import { db } from '~/lib/db.server';
@@ -14,6 +14,7 @@ import ArticlePage from '~/components/ArticlePage';
 interface LoaderData {
   articles: Article[];
   user: User;
+  topics: Topic[];
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -32,10 +33,12 @@ export const loader: LoaderFunction = async ({ request }) => {
               id: true,
             },
           },
+          topics: true,
         },
       })
     : null;
 
+  const topics = await db.topic.findMany({});
   return json({
     articles: data.map((article) => ({
       ...article,
@@ -44,6 +47,15 @@ export const loader: LoaderFunction = async ({ request }) => {
       ),
     })),
     user,
+    topics: topics.map((t) => {
+      const isSelected = userWithArticles?.topics.some(
+        (selected) => selected.id === t.id,
+      );
+      return {
+        ...t,
+        selected: isSelected,
+      };
+    }),
   });
 };
 
@@ -56,6 +68,14 @@ export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
   // eslint-disable-next-line
+  console.log(form.get('formId'));
+  const isSavingTopic = form.get('action') === 'save-topic';
+  if (isSavingTopic) {
+    for (const pair of form.entries()) {
+      console.log(`${pair[0]}, ${pair[1]}`);
+    }
+  }
+
   try {
     const bookmarked = form.get('bookmarked') as
       | FormArticle['bookmarked']
@@ -111,8 +131,8 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const IndexRoute: FC = () => {
-  const { articles, user } = useLoaderData<LoaderData>();
-  return <ArticlePage user={user} articles={articles} />;
+  const { articles, user, topics } = useLoaderData<LoaderData>();
+  return <ArticlePage user={user} articles={articles} categoryList={topics} />;
 };
 
 export const links: LinksFunction = () => {

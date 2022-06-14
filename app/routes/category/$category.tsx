@@ -44,7 +44,6 @@ interface FormArticle extends Omit<Article, 'pubDateTimestamp' | 'bookmarked'> {
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
-  // eslint-disable-next-line
   try {
     const bookmarked = form.get('bookmarked') as
       | FormArticle['bookmarked']
