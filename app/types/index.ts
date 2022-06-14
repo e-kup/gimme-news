@@ -1,7 +1,7 @@
 import { OpenGraphImage, OpenGraphProperties } from 'open-graph-scraper';
-import supportedTopic from '~/config/supportedTopic';
+import supportedTopics from '~/config/supportedTopics';
 
-export type SupportedTopic = typeof supportedTopic[number];
+export type SupportedTopic = typeof supportedTopics[number];
 
 export interface BasicFeed {
   title: string;

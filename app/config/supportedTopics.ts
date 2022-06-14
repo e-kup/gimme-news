@@ -1,4 +1,4 @@
-const supportedTopic = [
+const supportedTopics = [
   'ux',
   'design',
   'frontend',
@@ -6,4 +6,4 @@ const supportedTopic = [
   'react',
 ] as const;
 
-export default supportedTopic;
+export default supportedTopics;
