@@ -1,4 +1,10 @@
-import { LiveReload, Links, Outlet, Scripts } from '@remix-run/react';
+import {
+  LiveReload,
+  Links,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
 import globalStylesUrl from './styles/global.css';
@@ -20,8 +26,9 @@ const App = () => {
             <Outlet />
           </AppLayout>
         </ThemeProvider>
-        <Scripts />
         <LiveReload />
+        <ScrollRestoration />
+        <Scripts />
       </body>
     </html>
   );
