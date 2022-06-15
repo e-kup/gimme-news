@@ -40,18 +40,18 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
     const uniqueFeed = getUnique(feed);
     const randomizedFeed = sortFeed(uniqueFeed);
     const limitedFeed = cropFeed(randomizedFeed);
-    const articles = Promise.all(
+    const articles = await Promise.all(
       limitedFeed.map(async (rssItem) => {
         try {
           const metadata = await getUrlMetaData(rssItem.guid);
-          return mapRssItemToArticle(rssItem, metadata);
+          return metadata ? mapRssItemToArticle(rssItem, metadata) : undefined;
         } catch (e) {
           console.log(e);
-          return mapRssItemToArticle(rssItem);
+          return undefined;
         }
       }),
     );
-    return articles;
+    return articles.filter(Boolean) as Article[];
   } catch (e) {
     console.log("couldn't prepare articles, error:", e);
   }
