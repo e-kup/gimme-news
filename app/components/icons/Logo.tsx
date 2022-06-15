@@ -4,8 +4,6 @@ const Logo: FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="inherit"
-      height="auto"
       viewBox="69.231 212.251 405.435 87.498"
     >
       <g fill="currentColor" data-uid="o_f0l8n52gk_12">
