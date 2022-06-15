@@ -215,3 +215,20 @@ export const mapRssItemToArticle = (
       '',
   };
 };
+
+export const getTopicName = (topic: string) => {
+  switch (topic) {
+    case 'ux': {
+      return 'UX';
+    }
+    case '.net': {
+      return 'UX';
+    }
+    case 'php': {
+      return 'PHP';
+    }
+    default: {
+      return capitalize(topic);
+    }
+  }
+};

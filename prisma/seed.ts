@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import supportedTopics from '~/config/supportedTopics';
-import { capitalize } from '~/utils';
+import { getTopicName } from '~/utils';
 
 const db = new PrismaClient();
 
@@ -10,7 +10,7 @@ async function seed() {
       return db.topic.create({
         data: {
           id: topic,
-          name: capitalize(topic),
+          name: getTopicName(topic),
         },
       });
     }),
