@@ -41,15 +41,14 @@ export const getFeedUrlByTopic = (
   feed: Feed,
   topic: SupportedTopic,
 ): string => {
-  if (!canGetCategoryArticles(feed)) {
-    throw new Error("this feed can't be filtered by topic");
-  }
+  if (canGetCategoryArticles(feed)) {
+    if (isSearchableFeed(feed)) {
+      return `${feed.url}?${feed.query}=${topic}`;
+    }
 
-  if (isSearchableFeed(feed)) {
-    return `${feed.url}?${feed.query}=${topic}`;
+    return `${feed.url}${feed.categoryPath}/${topic}`;
   }
-
-  return `${feed.url}${feed.categoryPath}/${topic}`;
+  return feed.url;
 };
 
 export const getAllFeedUrls = (): string[] => {
@@ -58,7 +57,7 @@ export const getAllFeedUrls = (): string[] => {
 
 export const getFeedUrlsByTopic = (topic: SupportedTopic): string[] => {
   return feed
-    .filter(canGetCategoryArticles)
+    .filter((feedItem) => feedItem.topic.includes(topic))
     .map((feed) => getFeedUrlByTopic(feed, topic));
 };
 
