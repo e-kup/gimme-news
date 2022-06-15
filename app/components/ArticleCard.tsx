@@ -1,4 +1,5 @@
-import { useState, FC } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import LoginModalTrigger from '~/components/LoginModalTrigger';
 import BookmarkIcon from '~/components/icons/Bookmark';
 import StoredBookmarkIcon from '~/components/icons/StoredBookmark';
@@ -33,7 +34,7 @@ const ArticleCard: FC<CardProps> = ({
     <a href={url}>
       <div className="card rounded-none h-full border border-primary bg-base-100 base-200">
         <figure>
-          <img src={image} aria-hidden="true" />
+          <img src={image} aria-hidden="true" alt={title} />
         </figure>
         <div className="card-body">
           <div className="badge badge-ghost">{publicationDate}</div>

@@ -1,4 +1,4 @@
-import { Feed } from '~/types';
+import type { Feed } from '~/types';
 
 const feed: Feed[] = [
   {

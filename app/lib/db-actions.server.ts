@@ -1,5 +1,5 @@
 import { db } from '~/lib/db.server';
-import { FormArticle } from '~/utils';
+import type { FormArticle } from '~/utils';
 
 export const getUserWithArticles = async (userId: string) => {
   return await db.user.findUnique({

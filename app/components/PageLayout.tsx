@@ -1,6 +1,6 @@
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { Link } from '@remix-run/react';
-import { User } from '~/lib/session.server';
+import type { User } from '~/lib/session.server';
 import LoginModal from '~/components/LoginModal';
 import Logo from '~/components/icons/Logo';
 import ThemeSwitch from '~/components/ThemeSwith';

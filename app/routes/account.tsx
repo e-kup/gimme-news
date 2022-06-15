@@ -1,11 +1,12 @@
-import { FC } from 'react';
-import type { ActionFunction } from '@remix-run/node';
-import { json, LoaderFunction } from '@remix-run/node';
+import type { FC } from 'react';
+import type { ActionFunction , LoaderFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
-import { Topic } from '~/types';
+import type { Topic } from '~/types';
 
-import { requireUserId, User } from '~/lib/session.server';
+import type { User } from '~/lib/session.server';
+import { requireUserId } from '~/lib/session.server';
 import PageLayout from '~/components/PageLayout';
 import {
   getAllTopics,

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useLocation, useNavigate } from '@remix-run/react';
 
 interface LoginModalProps {

@@ -1,15 +1,16 @@
-import { FC } from 'react';
-import type { ActionFunction } from '@remix-run/node';
-import { json, LoaderFunction } from '@remix-run/node';
+import type { FC } from 'react';
+import type { ActionFunction , LoaderFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { useLoaderData, useSubmit } from '@remix-run/react';
 
-import { Article } from '~/types';
+import type { Article } from '~/types';
 import ArticleCard from '~/components/ArticleCard';
 import ArticleGridLayout from '~/components/ArticleGridLayout';
 import PageLayout from '~/components/PageLayout';
 
 import { getLocaleFromTimestamp } from '~/utils';
-import { requireUserId, User } from '~/lib/session.server';
+import type { User } from '~/lib/session.server';
+import { requireUserId } from '~/lib/session.server';
 import {
   getUserWithArticles,
   removeArticleFromUser,

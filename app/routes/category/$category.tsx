@@ -1,16 +1,17 @@
-import { FC } from 'react';
-import type { LoaderFunction } from '@remix-run/node';
-import { ActionFunction, json } from '@remix-run/node';
+import type { FC } from 'react';
+import type { LoaderFunction , ActionFunction} from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import { fetchArticlesByTopic } from '~/lib/feed';
-import { Article, Topic } from '~/types';
+import type { Article, Topic } from '~/types';
 import {
   isSupportedTopic,
   mapFormArticle,
   mapUserWithArticlesAndTopics,
 } from '~/utils';
-import { getUser, requireUserId, User } from '~/lib/session.server';
+import type { User } from '~/lib/session.server';
+import { getUser, requireUserId } from '~/lib/session.server';
 import ArticlePage from '~/components/ArticlePage';
 import {
   addArticleToUser,

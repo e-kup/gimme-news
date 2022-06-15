@@ -1,5 +1,5 @@
 import { NavLink } from '@remix-run/react';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 interface CategoryLinkProps {
   url: string;

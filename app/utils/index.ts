@@ -1,4 +1,4 @@
-import {
+import type {
   Article,
   CategoryFeed,
   Feed,
@@ -9,14 +9,14 @@ import {
 } from '~/types';
 import feed from '~/config/feed';
 import supportedTopics from '~/config/supportedTopics';
-import { User } from '~/lib/session.server';
-import {
+import type { User } from '~/lib/session.server';
+import type {
   getAllTopics,
   getUserWithArticles,
   getUserWithArticlesAndTopics,
   getUserWithTopics,
 } from '~/lib/db-actions.server';
-import { getUrlMetaData } from '~/lib/metaData';
+import type { getUrlMetaData } from '~/lib/metaData';
 import { DESCRIPTION_CHAR_LIMIT } from '~/lib/feed';
 
 export const isCategoryFeed = (feed: Feed): feed is CategoryFeed => {

@@ -1,5 +1,6 @@
-import ogs, { ErrorResult, SuccessResult } from 'open-graph-scraper';
-import { MetaData, OGMetaDataResult } from '~/types';
+import type { ErrorResult, SuccessResult } from 'open-graph-scraper';
+import ogs from 'open-graph-scraper';
+import type { MetaData, OGMetaDataResult } from '~/types';
 
 const isOgsSuccessResponse = (
   response: ErrorResult | SuccessResult,

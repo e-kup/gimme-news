@@ -1,12 +1,12 @@
-import { Article, ParseResult, RssContent, SupportedTopic } from '~/types';
+import type { Article, ParseResult, RssContent, SupportedTopic } from '~/types';
 import {
   getAllFeedUrls,
   getFeedUrlsByTopic,
   getTimestampFromDateString,
   mapRssItemToArticle,
 } from '~/utils';
-import { parseRssFromUrl } from '~/lib/rss-parser';
-import { getUrlMetaData } from '~/lib/metaData';
+import { parseRssFromUrl } from '~/lib/rss-parser.server';
+import { getUrlMetaData } from '~/lib/metaData.server';
 
 const ARTICLES_LIMIT = 30;
 export const DESCRIPTION_CHAR_LIMIT = 300;

@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useSubmit } from '@remix-run/react';
 
 import { getLocaleFromTimestamp } from '~/utils';
-import { User } from '~/lib/session.server';
-import { Article, Topic } from '~/types';
+import type { User } from '~/lib/session.server';
+import type { Article, Topic } from '~/types';
 
 import ArticleGridLayout from '~/components/ArticleGridLayout';
 import ArticleCard from '~/components/ArticleCard';

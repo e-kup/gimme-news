@@ -1,4 +1,5 @@
-import { FC, useEffect } from 'react';
+import type { FC } from 'react';
+import { useEffect } from 'react';
 
 import MoonIcon from '~/components/icons/Moon';
 import SunIcon from '~/components/icons/Sun';
@@ -22,7 +23,7 @@ const ThemeSwitch: FC = () => {
     if (!theme) {
       setTheme(defaultDark ? 'dark' : 'light');
     }
-  }, [theme]);
+  }, [theme, setTheme]);
 
   useEffect(() => {
     const htmlObj = document.getElementsByTagName('html')[0];

@@ -1,5 +1,5 @@
-import { OpenGraphImage, OpenGraphProperties } from 'open-graph-scraper';
-import supportedTopics from '~/config/supportedTopics';
+import type { OpenGraphImage, OpenGraphProperties } from 'open-graph-scraper';
+import type supportedTopics from '~/config/supportedTopics';
 
 export type SupportedTopic = typeof supportedTopics[number];
 

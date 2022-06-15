@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import CategoryLink from '~/components/CategoryLink';
-import { SupportedTopic, Topic } from '~/types';
+import type { SupportedTopic, Topic } from '~/types';
 import SparklesIcon from '~/components/icons/Sparkles';
 import LoginModalTrigger from '~/components/LoginModalTrigger';
 import PlusIcon from '~/components/icons/Plus';

@@ -1,9 +1,11 @@
-import { FC, useState } from 'react';
+import type { FC} from 'react';
+import { useState } from 'react';
 import { useActionData, useSearchParams } from '@remix-run/react';
-import {
+import type {
   ActionFunction,
+  LoaderFunction} from '@remix-run/node';
+import {
   json,
-  LoaderFunction,
   redirect,
 } from '@remix-run/node';
 
