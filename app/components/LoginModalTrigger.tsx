@@ -6,7 +6,7 @@ interface LoginModalTriggerProps {
 
 const LoginModalTrigger: FC<LoginModalTriggerProps> = ({ id, children }) => {
   return (
-    <label className="cursor-pointer" htmlFor={id}>
+    <label className="cursor-pointer shrink-0" htmlFor={id}>
       {children}
     </label>
   );
