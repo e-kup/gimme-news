@@ -27,7 +27,7 @@ export interface Article {
   title: string;
   link: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string;
   pubDateTimestamp: number;
   bookmarked?: boolean;
 }
