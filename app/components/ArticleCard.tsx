@@ -33,7 +33,7 @@ const ArticleCard: FC<CardProps> = ({
   return (
     <a href={url}>
       <div className="card rounded-none h-full border border-primary bg-base-100 base-200">
-        <figure>
+        <figure className="max-h-52 overflow-hidden">
           <img src={image} aria-hidden="true" alt={title} />
         </figure>
         <div className="card-body">

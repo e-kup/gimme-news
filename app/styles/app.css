@@ -3349,6 +3349,10 @@ body[dir="rtl"] .checkbox:checked,
   height: 1.5rem;
 }
 
+.max-h-52 {
+  max-height: 13rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -3435,6 +3439,10 @@ body[dir="rtl"] .checkbox:checked,
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .rounded-none {
