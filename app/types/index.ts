@@ -9,6 +9,7 @@ export interface BasicFeed {
   website: string;
   url: string;
   topic: SupportedTopic[];
+  topicOnly?: boolean;
 }
 
 export interface CategoryFeed extends BasicFeed {

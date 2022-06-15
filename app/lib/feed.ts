@@ -11,6 +11,19 @@ import { getUrlMetaData } from '~/lib/metaData';
 const ARTICLES_LIMIT = 30;
 export const DESCRIPTION_CHAR_LIMIT = 300;
 
+const getUnique = (feed: RssContent[]): RssContent[] => {
+  return feed.reduce<RssContent[]>((feedList, feedItem) => {
+    if (
+      feedList.some(
+        (f) => f.guid === feedItem.guid || f.title === feedItem.title,
+      )
+    ) {
+      return feedList;
+    }
+    return [...feedList, feedItem];
+  }, []);
+};
+
 const sortFeed = (feed: RssContent[]): RssContent[] => {
   return feed.sort(
     (a, b) =>
@@ -25,7 +38,8 @@ const cropFeed = (feed: RssContent[]): RssContent[] => {
 
 const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
   try {
-    const randomizedFeed = sortFeed(feed);
+    const uniqueFeed = getUnique(feed);
+    const randomizedFeed = sortFeed(uniqueFeed);
     const limitedFeed = cropFeed(randomizedFeed);
     const articles = Promise.all(
       limitedFeed.map(async (rssItem) => {
