@@ -16,8 +16,8 @@ import type {
   getUserWithArticlesAndTopics,
   getUserWithTopics,
 } from '~/lib/db-actions.server';
-import type { getUrlMetaData } from '~/lib/metaData';
-import { DESCRIPTION_CHAR_LIMIT } from '~/lib/feed';
+import type { getUrlMetaData } from '~/lib/metaData.server';
+import { DESCRIPTION_CHAR_LIMIT } from '~/lib/feed.server';
 
 export const isCategoryFeed = (feed: Feed): feed is CategoryFeed => {
   return 'categoryPath' in feed;

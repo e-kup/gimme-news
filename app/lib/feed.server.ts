@@ -13,11 +13,10 @@ export const DESCRIPTION_CHAR_LIMIT = 300;
 
 const getUnique = (feed: RssContent[]): RssContent[] => {
   return feed.reduce<RssContent[]>((feedList, feedItem) => {
-    if (
-      feedList.some(
-        (f) => f.guid === feedItem.guid || f.title === feedItem.title,
-      )
-    ) {
+    const isAlreadyInList = feedList.some(
+      (f) => f.guid === feedItem.guid || f.title === feedItem.title,
+    );
+    if (isAlreadyInList) {
       return feedList;
     }
     return [...feedList, feedItem];
@@ -54,7 +53,7 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
     );
     return articles;
   } catch (e) {
-    console.log("couldn't get map articles, error:", e);
+    console.log("couldn't prepare articles, error:", e);
   }
   return [];
 };

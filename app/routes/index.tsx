@@ -1,11 +1,11 @@
 import type { FC } from 'react';
-import type { ActionFunction , LoaderFunction } from '@remix-run/node';
+import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import type { Article, Topic } from '~/types';
 
-import { fetchAllArticles } from '~/lib/feed';
+import { fetchAllArticles } from '~/lib/feed.server';
 import type { User } from '~/lib/session.server';
 import { getUser, requireUserId } from '~/lib/session.server';
 import ArticlePage from '~/components/ArticlePage';

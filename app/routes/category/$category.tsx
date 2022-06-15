@@ -1,9 +1,9 @@
 import type { FC } from 'react';
-import type { LoaderFunction , ActionFunction} from '@remix-run/node';
+import type { LoaderFunction, ActionFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
-import { fetchArticlesByTopic } from '~/lib/feed';
+import { fetchArticlesByTopic } from '~/lib/feed.server';
 import type { Article, Topic } from '~/types';
 import {
   isSupportedTopic,
