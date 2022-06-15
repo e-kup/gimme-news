@@ -1,13 +1,8 @@
-import type { FC} from 'react';
+import type { FC } from 'react';
 import { useState } from 'react';
 import { useActionData, useSearchParams } from '@remix-run/react';
-import type {
-  ActionFunction,
-  LoaderFunction} from '@remix-run/node';
-import {
-  json,
-  redirect,
-} from '@remix-run/node';
+import type { ActionFunction, LoaderFunction } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 
 import {
   createUserSession,
@@ -120,7 +115,7 @@ const LoginRoute: FC = () => {
       <div className="w-full flex justify-center">
         <div className="card w-full lg:w-3/5 bg-secondary text-secondary-content">
           <div className="card-body">
-            <h2 className="card-title mb-5 font-poppins text-2xl">Login</h2>
+            <h2 className="card-title mb-5 text-2xl">Login</h2>
             <form method="post" autoComplete="off">
               <input
                 type="hidden"

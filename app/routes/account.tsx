@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import type { ActionFunction , LoaderFunction } from '@remix-run/node';
+import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
@@ -47,7 +47,7 @@ const AccountRoute: FC = () => {
     <PageLayout user={user}>
       <div className="relative text-center base-200">
         <div className="mb-20">
-          <h3 className="text-lg font-bold font-poppins mb-6">Your account</h3>
+          <h3 className="text-lg font-bold mb-6">Your account</h3>
           <div className="flex text-left">
             <p className="mr-5">Username: </p>
             <p>{user?.username}</p>
@@ -55,7 +55,7 @@ const AccountRoute: FC = () => {
         </div>
         <div className="divider" />
         <div className="mb-20">
-          <h3 className="text-lg font-bold font-poppins mb-6">
+          <h3 className="text-lg font-bold mb-6">
             Topics you currently follow
           </h3>
           <form method="post">

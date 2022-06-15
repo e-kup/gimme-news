@@ -28,13 +28,7 @@ const App = () => {
 };
 
 export const links: LinksFunction = () => {
-  return [
-    { rel: 'stylesheet', href: appStylesUrl },
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&display=swap',
-    },
-  ];
+  return [{ rel: 'stylesheet', href: appStylesUrl }];
 };
 
 export default App;
