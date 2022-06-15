@@ -49,6 +49,7 @@ const ArticlePage: FC<ArticleGridProps> = ({
             onBookmarkChange(item, isBookmarked);
           return (
             <ArticleCard
+              key={id}
               url={link}
               image={imageUrl}
               title={title}

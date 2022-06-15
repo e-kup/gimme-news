@@ -67,7 +67,7 @@ const BookmarksRoute: FC = () => {
                 description={description}
                 publicationDate={publicationDate}
                 isUserLogged={Boolean(user?.id)}
-                bookmarked={bookmarked}
+                bookmarked={Boolean(bookmarked)}
                 onChange={onChange}
               />
             </div>

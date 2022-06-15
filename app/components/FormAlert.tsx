@@ -3,7 +3,7 @@ import ExclamationCircleIcon from '~/components/icons/ExclamationCircle';
 
 const FormAlert: FC = ({ children }) => {
   return (
-    <div className="flex items-center mt-2">
+    <div className="flex items-center text-primary-content mt-2">
       <div>
         <ExclamationCircleIcon />
       </div>

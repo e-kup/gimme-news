@@ -11,11 +11,14 @@ const isOgsSuccessResponse = (
 export const getOGMetaData = async (
   url: string,
 ): Promise<OGMetaDataResult | undefined> => {
-  const urlMetaData = await ogs({ url });
-  if (isOgsSuccessResponse(urlMetaData)) {
-    return urlMetaData.result;
+  try {
+    const urlMetaData = await ogs({ url });
+    if (isOgsSuccessResponse(urlMetaData)) {
+      return urlMetaData.result;
+    }
+  } catch (e) {
+    console.log(`couldn't get metadata of url: ${url}`);
   }
-  console.log(`couldn't get metadata of url: ${url}`);
 };
 
 const validateImageUrl = (url: string | undefined): string | undefined => {
