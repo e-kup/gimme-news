@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import supportedTopics from '~/config/supportedTopics';
-import { capitalize } from '~/lib/utils';
+import { capitalize } from '~/utils';
 
 const db = new PrismaClient();
 

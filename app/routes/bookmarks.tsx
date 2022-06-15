@@ -8,9 +8,13 @@ import ArticleCard from '~/components/ArticleCard';
 import ArticleGridLayout from '~/components/ArticleGridLayout';
 import PageLayout from '~/components/PageLayout';
 
-import { db } from '~/lib/db.server';
-import { getLocaleFromTimestamp } from '~/lib/utils';
+import { getLocaleFromTimestamp } from '~/utils';
 import { requireUserId, User } from '~/lib/session.server';
+import {
+  getUserWithArticles,
+  removeArticleFromUser,
+} from '~/lib/db-actions.server';
+import { mapUserWithArticles } from '~/utils';
 
 interface LoaderData {
   articles: Article[];
@@ -19,46 +23,17 @@ interface LoaderData {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  const userWithArticles = await db.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      id: true,
-      username: true,
-      articles: {
-        orderBy: { pubDateTimestamp: 'desc' },
-      },
-    },
-  });
-  if (!userWithArticles) return { user: null, articles: [] };
-  const { articles, ...user } = userWithArticles;
+  const userWithArticles = await getUserWithArticles(userId);
 
-  return json({
-    user,
-    articles: articles.map((article) => ({
-      ...article,
-      bookmarked: true,
-    })),
-  });
+  return json(mapUserWithArticles(userWithArticles));
 };
 
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  const form = await request.formData();
-  // eslint-disable-next-line
   try {
+    const form = await request.formData();
     const id = form.get('id') as string;
-    await db.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        articles: {
-          disconnect: [{ id }],
-        },
-      },
-    });
+    await removeArticleFromUser(userId, id);
   } catch (e) {
     console.log(e);
   }
@@ -73,7 +48,7 @@ const BookmarksRoute: FC = () => {
       {
         id,
       },
-      { replace: false, method: 'post' },
+      { method: 'post' },
     );
   };
   return (

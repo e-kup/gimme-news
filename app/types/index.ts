@@ -28,7 +28,7 @@ export interface Article {
   description: string;
   imageUrl: string;
   pubDateTimestamp: number;
-  bookmarked: boolean;
+  bookmarked?: boolean;
 }
 
 export type OGMetaDataResult = OpenGraphProperties & {

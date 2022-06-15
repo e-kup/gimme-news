@@ -1,19 +1,23 @@
 import { FC } from 'react';
 import type { LoaderFunction } from '@remix-run/node';
 import { ActionFunction, json } from '@remix-run/node';
-import { useLoaderData, useSubmit } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 
 import { fetchArticlesByTopic } from '~/lib/feed';
-import ArticleCard from '~/components/ArticleCard';
-import ArticleGridLayout from '~/components/ArticleGridLayout';
 import { Article, Topic } from '~/types';
-import { getLocaleFromTimestamp, isSupportedTopic } from '~/lib/utils';
-import CategoryNav from '~/components/CategoryNav';
-import LoginModal from '~/components/LoginModal';
-import { getUser, getUserId, requireUserId, User } from '~/lib/session.server';
-import PageLayout from '~/components/PageLayout';
+import {
+  isSupportedTopic,
+  mapFormArticle,
+  mapUserWithArticlesAndTopics,
+} from '~/utils';
+import { getUser, requireUserId, User } from '~/lib/session.server';
 import ArticlePage from '~/components/ArticlePage';
-import { db } from '~/lib/db.server';
+import {
+  addArticleToUser,
+  getAllTopics,
+  getUserWithArticlesAndTopics,
+  removeArticleFromUser,
+} from '~/lib/db-actions.server';
 
 interface LoaderData {
   articles: Article[];
@@ -22,7 +26,6 @@ interface LoaderData {
 }
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  const user = await getUser(request);
   const { category } = params;
   if (!category || !isSupportedTopic(category)) {
     throw new Response('Not Found', {
@@ -30,101 +33,31 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     });
   }
 
-  const data = await fetchArticlesByTopic(category);
-  const userWithArticles = user
-    ? await db.user.findUnique({
-        where: {
-          id: user.id,
-        },
-
-        select: {
-          id: true,
-          articles: {
-            select: {
-              id: true,
-            },
-          },
-          topics: true,
-        },
-      })
+  const allArticles = await fetchArticlesByTopic(category);
+  const user = await getUser(request);
+  const userWithArticlesAndTopics = user
+    ? await getUserWithArticlesAndTopics(user.id)
     : null;
 
-  const topics = await db.topic.findMany({});
-  return json({
-    articles: data.map((article) => ({
-      ...article,
-      bookmarked: userWithArticles?.articles.some(
-        (bookmark) => bookmark.id === article.id,
-      ),
-    })),
-    user,
-    topics: topics.map((t) => {
-      const isSelected = userWithArticles?.topics.some(
-        (selected) => selected.id === t.id,
-      );
-      return {
-        ...t,
-        selected: isSelected,
-      };
-    }),
-  });
+  const allTopics = await getAllTopics();
+  return json(
+    mapUserWithArticlesAndTopics(
+      userWithArticlesAndTopics,
+      allArticles,
+      allTopics,
+    ),
+  );
 };
-
-interface FormArticle extends Omit<Article, 'pubDateTimestamp' | 'bookmarked'> {
-  pubDateTimestamp: string;
-  bookmarked: string;
-}
 
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
   try {
-    const bookmarked = form.get('bookmarked') as
-      | FormArticle['bookmarked']
-      | null;
-    const id = form.get('id') as FormArticle['id'];
-    const title = form.get('title') as FormArticle['title'];
-    const description = form.get('description') as FormArticle['description'];
-    const imageUrl = form.get('imageUrl') as FormArticle['imageUrl'];
-    const url = form.get('link') as FormArticle['link'];
-    const pubDateTimestamp = Number(
-      form.get('pubDateTimestamp') as FormArticle['pubDateTimestamp'],
-    );
-
-    if (bookmarked) {
-      await db.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          articles: {
-            connectOrCreate: {
-              where: {
-                id,
-              },
-              create: {
-                id,
-                title,
-                description,
-                imageUrl,
-                url,
-                pubDateTimestamp,
-              },
-            },
-          },
-        },
-      });
+    const articleData = mapFormArticle(form);
+    if (articleData.bookmarked) {
+      await addArticleToUser(userId, articleData);
     } else {
-      await db.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          articles: {
-            disconnect: [{ id }],
-          },
-        },
-      });
+      await removeArticleFromUser(userId, articleData.id);
     }
   } catch (e) {
     console.log(e);

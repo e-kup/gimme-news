@@ -3,12 +3,13 @@ import {
   getAllFeedUrls,
   getFeedUrlsByTopic,
   getTimestampFromDateString,
-} from '~/lib/utils';
+  mapRssItemToArticle,
+} from '~/utils';
 import { parseRssFromUrl } from '~/lib/rss-parser';
 import { getUrlMetaData } from '~/lib/metaData';
 
 const ARTICLES_LIMIT = 30;
-const DESCRIPTION_CHAR_LIMIT = 300;
+export const DESCRIPTION_CHAR_LIMIT = 300;
 
 const sortFeed = (feed: RssContent[]): RssContent[] => {
   return feed.sort(
@@ -28,30 +29,12 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
     const limitedFeed = cropFeed(randomizedFeed);
     const articles = Promise.all(
       limitedFeed.map(async (rssItem) => {
-        const { title, link, pubDate, guid } = rssItem;
-        const pubDateTimestamp = getTimestampFromDateString(pubDate);
         try {
           const metadata = await getUrlMetaData(rssItem.link);
-          return {
-            id: guid,
-            title: title,
-            link: link,
-            pubDateTimestamp,
-            imageUrl: metadata?.imageUrl ?? '',
-            description:
-              (metadata?.description &&
-                metadata.description.slice(0, DESCRIPTION_CHAR_LIMIT)) ??
-              '',
-          };
+          return mapRssItemToArticle(rssItem, metadata);
         } catch (e) {
-          return {
-            id: guid,
-            title: title,
-            link: link,
-            pubDateTimestamp,
-            imageUrl: '',
-            description: '',
-          };
+          console.log(e);
+          return mapRssItemToArticle(rssItem);
         }
       }),
     );

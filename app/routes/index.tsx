@@ -6,10 +6,16 @@ import { useLoaderData } from '@remix-run/react';
 import { Article, Topic } from '~/types';
 import stylesUrl from '~/styles/index.css';
 
-import { db } from '~/lib/db.server';
 import { fetchAllArticles } from '~/lib/feed';
 import { getUser, requireUserId, User } from '~/lib/session.server';
 import ArticlePage from '~/components/ArticlePage';
+import {
+  addArticleToUser,
+  getAllTopics,
+  getUserWithArticlesAndTopics,
+  removeArticleFromUser,
+} from '~/lib/db-actions.server';
+import { mapFormArticle, mapUserWithArticlesAndTopics } from '~/utils';
 
 interface LoaderData {
   articles: Article[];
@@ -18,103 +24,31 @@ interface LoaderData {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const allArticles = await fetchAllArticles();
   const user = await getUser(request);
-  const data = await fetchAllArticles();
-  const userWithArticles = user
-    ? await db.user.findUnique({
-        where: {
-          id: user.id,
-        },
-
-        select: {
-          id: true,
-          articles: {
-            select: {
-              id: true,
-            },
-          },
-          topics: true,
-        },
-      })
+  const userWithArticlesAndTopics = user
+    ? await getUserWithArticlesAndTopics(user.id)
     : null;
 
-  const topics = await db.topic.findMany({});
-  return json({
-    articles: data.map((article) => ({
-      ...article,
-      bookmarked: userWithArticles?.articles.some(
-        (bookmark) => bookmark.id === article.id,
-      ),
-    })),
-    user,
-    topics: topics.map((t) => {
-      const isSelected = userWithArticles?.topics.some(
-        (selected) => selected.id === t.id,
-      );
-      return {
-        ...t,
-        selected: isSelected,
-      };
-    }),
-  });
+  const allTopics = await getAllTopics();
+  return json(
+    mapUserWithArticlesAndTopics(
+      userWithArticlesAndTopics,
+      allArticles,
+      allTopics,
+    ),
+  );
 };
-
-interface FormArticle extends Omit<Article, 'pubDateTimestamp' | 'bookmarked'> {
-  pubDateTimestamp: string;
-  bookmarked: string;
-}
 
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
-
   try {
-    const bookmarked = form.get('bookmarked') as
-      | FormArticle['bookmarked']
-      | null;
-    const id = form.get('id') as FormArticle['id'];
-    const title = form.get('title') as FormArticle['title'];
-    const description = form.get('description') as FormArticle['description'];
-    const imageUrl = form.get('imageUrl') as FormArticle['imageUrl'];
-    const url = form.get('link') as FormArticle['link'];
-    const pubDateTimestamp = Number(
-      form.get('pubDateTimestamp') as FormArticle['pubDateTimestamp'],
-    );
-
-    if (bookmarked) {
-      await db.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          articles: {
-            connectOrCreate: {
-              where: {
-                id,
-              },
-              create: {
-                id,
-                title,
-                description,
-                imageUrl,
-                url,
-                pubDateTimestamp,
-              },
-            },
-          },
-        },
-      });
+    const articleData = mapFormArticle(form);
+    if (articleData.bookmarked) {
+      await addArticleToUser(userId, articleData);
     } else {
-      await db.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          articles: {
-            disconnect: [{ id }],
-          },
-        },
-      });
+      await removeArticleFromUser(userId, articleData.id);
     }
   } catch (e) {
     console.log(e);
@@ -122,7 +56,6 @@ export const action: ActionFunction = async ({ request }) => {
   return null;
 };
 
-//TODO: replace url with link
 const IndexRoute: FC = () => {
   const { articles, user, topics } = useLoaderData<LoaderData>();
   return <ArticlePage user={user} articles={articles} categoryList={topics} />;

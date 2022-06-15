@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSubmit } from '@remix-run/react';
 
-import { getLocaleFromTimestamp } from '~/lib/utils';
+import { getLocaleFromTimestamp } from '~/utils';
 import { User } from '~/lib/session.server';
 import { Article, Topic } from '~/types';
 
@@ -55,7 +55,7 @@ const ArticlePage: FC<ArticleGridProps> = ({
               description={description}
               publicationDate={publicationDate}
               isUserLogged={Boolean(user?.id)}
-              bookmarked={bookmarked}
+              bookmarked={Boolean(bookmarked)}
               onChange={onChange}
             />
           );

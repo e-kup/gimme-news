@@ -5,9 +5,14 @@ import { useLoaderData } from '@remix-run/react';
 
 import { Topic } from '~/types';
 
-import { db } from '~/lib/db.server';
 import { requireUserId, User } from '~/lib/session.server';
 import PageLayout from '~/components/PageLayout';
+import {
+  getAllTopics,
+  getUserWithTopics,
+  setTopicsToUser,
+} from '~/lib/db-actions.server';
+import { mapFormTopics, mapUserWithTopics } from '~/utils';
 
 interface LoaderData {
   user: User;
@@ -16,27 +21,9 @@ interface LoaderData {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  const userWithTopics = await db.user.findUnique({
-    where: {
-      id: userId,
-    },
-    include: {
-      topics: true,
-    },
-  });
-  const topics = await db.topic.findMany({});
-  return json({
-    user: userWithTopics,
-    topics: topics.map((t) => {
-      const isSelected = userWithTopics?.topics.some(
-        (selectedTopic) => selectedTopic.id === t.id,
-      );
-      return {
-        ...t,
-        selected: isSelected,
-      };
-    }),
-  });
+  const userWithTopics = await getUserWithTopics(userId);
+  const allTopics = await getAllTopics();
+  return json(mapUserWithTopics(userWithTopics, allTopics));
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -44,20 +31,8 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
 
   try {
-    const selectedTopics = Object.keys(Object.fromEntries(form)).map(
-      (topicId) => ({ id: topicId }),
-    );
-    await db.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        topics: {
-          set: selectedTopics,
-        },
-      },
-    });
-    return json(selectedTopics);
+    const selectedTopics = mapFormTopics(form);
+    await setTopicsToUser(userId, selectedTopics);
   } catch (e) {
     console.log(e);
   }
