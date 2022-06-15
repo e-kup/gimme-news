@@ -1,4 +1,4 @@
-import type { Article, ParseResult, RssContent, SupportedTopic } from '~/types';
+import { Article, ParseResult, RssContent, SupportedTopic } from '~/types';
 import {
   getAllFeedUrls,
   getFeedUrlsByTopic,
@@ -7,20 +7,26 @@ import {
 } from '~/utils';
 import { parseRssFromUrl } from '~/lib/rss-parser.server';
 import { getUrlMetaData } from '~/lib/metaData.server';
+import { isEnglish } from '~/lib/language-detector.server';
 
 const ARTICLES_LIMIT = 30;
 export const DESCRIPTION_CHAR_LIMIT = 300;
 
 const getUnique = (feed: RssContent[]): RssContent[] => {
   return feed.reduce<RssContent[]>((feedList, feedItem) => {
-    const isAlreadyInList = feedList.some(
-      (f) => f.guid === feedItem.guid || f.title === feedItem.title,
-    );
-    if (isAlreadyInList) {
+    if (
+      feedList.some(
+        (f) => f.guid === feedItem.guid || f.title === feedItem.title,
+      )
+    ) {
       return feedList;
     }
     return [...feedList, feedItem];
   }, []);
+};
+
+const getEngOnly = (feed: RssContent[]): RssContent[] => {
+  return feed.filter((feedItem) => isEnglish(feedItem.title));
 };
 
 const sortFeed = (feed: RssContent[]): RssContent[] => {
@@ -38,10 +44,12 @@ const cropFeed = (feed: RssContent[]): RssContent[] => {
 const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
   try {
     const uniqueFeed = getUnique(feed);
-    const randomizedFeed = sortFeed(uniqueFeed);
+    const engFeed = getEngOnly(uniqueFeed);
+    const randomizedFeed = sortFeed(engFeed);
     const limitedFeed = cropFeed(randomizedFeed);
     const articles = await Promise.all(
       limitedFeed.map(async (rssItem) => {
+        if (!rssItem.guid) return undefined;
         try {
           const metadata = await getUrlMetaData(rssItem.guid);
           return metadata ? mapRssItemToArticle(rssItem, metadata) : undefined;
