@@ -8,6 +8,7 @@ export type Theme = 'light' | 'dark' | undefined;
 
 const LIGHT_THEME = 'bumblebee';
 const DARK_THEME = 'dracula';
+const THEME_ATTR = 'data-theme';
 
 const ThemeSwitch: FC = () => {
   const [theme, setTheme] = useLocalStorage<Theme>('theme', undefined);
@@ -26,7 +27,7 @@ const ThemeSwitch: FC = () => {
   useEffect(() => {
     const htmlObj = document.getElementsByTagName('html')[0];
     htmlObj?.setAttribute(
-      'data-theme',
+      THEME_ATTR,
       theme === 'dark' ? DARK_THEME : LIGHT_THEME,
     );
   }, [theme]);

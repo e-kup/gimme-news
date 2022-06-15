@@ -1,10 +1,9 @@
 import { FC } from 'react';
-import type { ActionFunction, LinksFunction } from '@remix-run/node';
+import type { ActionFunction } from '@remix-run/node';
 import { json, LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import { Article, Topic } from '~/types';
-import stylesUrl from '~/styles/index.css';
 
 import { fetchAllArticles } from '~/lib/feed';
 import { getUser, requireUserId, User } from '~/lib/session.server';
@@ -59,10 +58,6 @@ export const action: ActionFunction = async ({ request }) => {
 const IndexRoute: FC = () => {
   const { articles, user, topics } = useLoaderData<LoaderData>();
   return <ArticlePage user={user} articles={articles} categoryList={topics} />;
-};
-
-export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: stylesUrl }];
 };
 
 export default IndexRoute;

@@ -52,16 +52,7 @@ export const getFeedUrlByTopic = (
 };
 
 export const getAllFeedUrls = (): string[] => {
-  return feed
-    .map((feedItem) => {
-      if (feedItem.topicOnly) {
-        return feedItem.topic.map((topic) =>
-          getFeedUrlByTopic(feedItem, topic),
-        );
-      }
-      return getFeedUrl(feedItem);
-    })
-    .flat();
+  return feed.filter((feedItem) => !feedItem.topicOnly).map(getFeedUrl);
 };
 
 export const getFeedUrlsByTopic = (topic: SupportedTopic): string[] => {

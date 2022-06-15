@@ -62,7 +62,7 @@ const ArticleCard: FC<CardProps> = ({
                 </label>
               </div>
             ) : (
-              <LoginModalTrigger id={'login'}>
+              <LoginModalTrigger id="login">
                 <div
                   className="tooltip tooltip-left"
                   data-tip="add to bookmarks"

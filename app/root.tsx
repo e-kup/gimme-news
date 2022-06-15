@@ -7,7 +7,6 @@ import {
 } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
-import globalStylesUrl from './styles/global.css';
 import appStylesUrl from './styles/app.css';
 
 const App = () => {
@@ -30,7 +29,6 @@ const App = () => {
 
 export const links: LinksFunction = () => {
   return [
-    { rel: 'stylesheet', href: globalStylesUrl },
     { rel: 'stylesheet', href: appStylesUrl },
     {
       rel: 'stylesheet',

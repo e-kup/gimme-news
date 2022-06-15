@@ -44,7 +44,7 @@ const prepareData = async (feed: RssContent[]): Promise<Article[]> => {
     const articles = Promise.all(
       limitedFeed.map(async (rssItem) => {
         try {
-          const metadata = await getUrlMetaData(rssItem.link);
+          const metadata = await getUrlMetaData(rssItem.guid);
           return mapRssItemToArticle(rssItem, metadata);
         } catch (e) {
           console.log(e);

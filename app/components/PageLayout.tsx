@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { Link, NavLink } from '@remix-run/react';
+import { Link } from '@remix-run/react';
 import { User } from '~/lib/session.server';
-import LoginModalTrigger from '~/components/LoginModalTrigger';
 import LoginModal from '~/components/LoginModal';
 import Logo from '~/components/icons/Logo';
 import ThemeSwitch from '~/components/ThemeSwith';
+import Sidebar from '~/components/Sidebar';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -44,52 +44,8 @@ const PageLayout: FC<PageLayoutProps> = ({ children, hideSidebar, user }) => {
         {!hideSidebar ? (
           <>
             <div className="w-2/12 relative">
-              <div className="sticky top-0 h-screen w-full px-3 py-5">
-                <NavLink
-                  to="/"
-                  prefetch="render"
-                  className={({ isActive }) =>
-                    `btn ${
-                      isActive ? 'btn-secondary' : 'btn-ghost'
-                    } w-full justify-start`
-                  }
-                >
-                  All news
-                </NavLink>
-                {user && (
-                  <NavLink
-                    to="/bookmarks"
-                    className={({ isActive }) =>
-                      `btn ${
-                        isActive ? 'btn-secondary' : 'btn-ghost'
-                      } w-full justify-start`
-                    }
-                  >
-                    Bookmarks
-                  </NavLink>
-                )}
-                {user && (
-                  <NavLink
-                    to="/account"
-                    className={({ isActive }) =>
-                      `btn ${
-                        isActive ? 'btn-secondary' : 'btn-ghost'
-                      } w-full justify-start`
-                    }
-                  >
-                    Account
-                  </NavLink>
-                )}
-                {!user && (
-                  <LoginModalTrigger id="login">
-                    <span className="btn btn-ghost w-full justify-start">
-                      Bookmarks
-                    </span>
-                  </LoginModalTrigger>
-                )}
-              </div>
+              <Sidebar isUserLogged={Boolean(user)} />
             </div>
-            <div className="divider divider-horizontal m-0 w-0" />
             <div className="flex w-10/12 base-200">
               <div className="p-8 w-full">{children}</div>
             </div>
